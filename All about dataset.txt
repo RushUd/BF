@@ -1,0 +1,16 @@
+2) Detailed description of the data. 
+
+	Dataset is Perrin Freres monthly champagne sales data. 
+	It tells us about how much champagne was sold from year 1964-1972.
+	Variable names:-
+	Month   Sales(measured as number of units)
+	None values are not accepted
+	
+3) Data Collection Methodology
+	The data set was already available on kaggle and on github. 
+	I did not create it, I will be using the dataset and making changes to it if needed.
+
+4) Why does this data set intrigue you?
+	This data set is about chamapgne sales for a particular company. I want to know, if 	there are any, sales trend hidden in the data set. Check if trends are seasonal. 
+
+	This dataset particularly intrigues me as in the upcoming years I see myself working 	on such datasets for a company, finding trends, sales, etc. from the data and 	reporting it.   
