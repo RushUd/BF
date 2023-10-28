@@ -1,0 +1,66 @@
+---
+title: "Decomposition HW"
+output: html_document
+date: "2023-10-28"
+---
+
+## R Markdown
+
+```{r}
+library(fpp)
+library(fpp2)
+
+
+df <- read.csv("C:\\Users\\rusha\\Downloads\\BF\\HW files\\perrin-freres-monthly-champagne-.csv")
+df_s<-df$Sales
+
+
+columns_to_convert <- c("Year", "Month")
+df[columns_to_convert] <- lapply(df[columns_to_convert], as.character)
+```
+
+
+```{r}
+#Time series 
+time_index <- as.Date(paste(df$Year, df$Month, "01", sep = "-"))
+ts_data <- ts(df$Sales, start = c(min(df$Year), min(df$Month)), frequency = 12)
+time_series <- ts(ts_data, start = c(min(df$Year), min(df$Month)), frequency = 12)
+plot(time_series)
+```
+
+
+
+```{r}
+#Decomposition
+head(time_series)
+decomp1 <- stl(time_series,s.window ="periodic")
+plot(decomp1)
+attributes(decomp1)
+```
+
+```{r}
+#Seasonal adjustment
+seasadj(decomp1)
+sea <- seasadj(decomp1)
+plot(sea)
+
+plot(time_series)
+lines(seasadj(decomp1), col="Red")
+# Default period forecast
+f_stl <- forecast(decomp1)
+f_stl <- forecast(decomp1,h=20)
+f_stl
+plot(f_stl)
+```
+
+
+```{r}
+#Trend adjustment 
+trendcycle(decomp1)
+trn <- trendcycle(decomp1)
+plot(trn)
+
+plot(time_series)
+lines(trendcycle(decomp1), col="blue")
+```
+
