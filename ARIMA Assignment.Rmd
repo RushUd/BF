@@ -1,0 +1,120 @@
+---
+title: "ARIMA Assignment"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r}
+library(fpp)
+library(fpp2)
+df <- read.csv("C:\\Users\\rusha\\Downloads\\BF\\HW files\\perrin-freres-monthly-champagne-.csv")
+df_s<-df$Sales
+columns_to_convert <- c("Year", "Month")
+df[columns_to_convert] <- lapply(df[columns_to_convert], as.character)
+time_index <- as.Date(paste(df$Year, df$Month, "01", sep = "-"))
+ts_data <- ts(df$Sales, start = c(min(df$Year), min(df$Month)), frequency = 12)
+plot(ts_data)
+```
+Output 
+The time series data is seasonal 
+
+```{r}
+tsdisplay(ts_data)
+```
+
+```{r}
+tsdiff1 <- diff(ts_data, differences = 1)
+plot(tsdiff1)
+```
+
+```{r}
+tsdisplay(tsdiff1)
+```
+
+```{r}
+auto_fit <- auto.arima(ts_data, trace=TRUE, stepwise = FALSE)
+
+```
+Output summary 
+
+ARIMA(1,0,0)(1,1,0)[12] with drift:
+(1,0,0) represents the non-seasonal part of the model. The model includes one lag of the dependent variable 
+(1,1,0) represents the seasonal part of the model. Indicates that first differences are taken at seasonal lag 12 because it is a monthly data with a seasonality of [12]
+with drift: indicates that the model includes a drift term.
+The model indicates that it considers the influence of both recent values and values from the same season in the previous year. 
+
+
+```{r}
+auto_fit
+```
+
+```{r}
+attributes(auto_fit)
+```
+Q3) Perform and Plot the forecast for the next five periods
+
+```{r}
+plot(forecast(auto_fit,h=5,level=c(99.5)))
+
+```
+Q2) Residual analysis 
+```{r}
+Acf(ts_data)
+```
+
+```{r}
+Acf(tsdiff1)
+```
+
+```{r}
+Acf(auto_fit$residuals)
+```
+
+```{r}
+plot.ts(residuals(auto_fit))
+```
+
+```{r}
+hist(auto_fit$residuals)
+```
+
+```{r}
+tsdiag(auto_fit)
+```
+
+```{r}
+nsdiffs(ts_data)
+```
+
+```{r}
+ndiffs(ts_data)
+```
+
+```{r}
+ndiffs((diff(ts_data,4)))
+```
+
+```{r}
+tsdisplay(diff(diff(ts_data,4)))
+```
+
+```{r}
+fit3 <- auto.arima(ts_data,trace=TRUE, stepwise = FALSE )
+```
+
+```{r}
+fit3
+```
+
+```{r}
+Acf(fit3$residuals)
+```
+
+```{r}
+plot.ts(residuals(fit3))
+```
+
+```{r}
+hist(fit3$residuals)
+```
